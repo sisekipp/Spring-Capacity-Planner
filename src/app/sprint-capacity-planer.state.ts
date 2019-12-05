@@ -1,7 +1,15 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 
 import {SprintCapacityPlanerStateModel} from './sprint-capacity-planer-state.model';
-import {CalcCapacity, DeleteTeamMember, EditTeamMember, NewDate, NewTeamMember, NewWorkingHours} from './sprint-capacity-planer.actions';
+import {
+  CalcCapacity,
+  DeleteTeamMember,
+  EditTeamMember,
+  NewDate,
+  NewTeamMember,
+  NewWorkingHours,
+  NewWorkingWeek
+} from './sprint-capacity-planer.actions';
 import {TeamMember} from './teammember.model';
 import * as moment from 'moment';
 
@@ -58,9 +66,18 @@ export class SprintCapacityPlanerState {
   @Action(NewWorkingHours)
   newWorkingHours(ctx: StateContext<SprintCapacityPlanerStateModel>, action: NewWorkingHours) {
     const state = ctx.getState();
-    ctx.setState({
-      ...state,
+    ctx.patchState({
       workingHours: action.workingHours
+    });
+
+    return ctx.dispatch(new CalcCapacity());
+  }
+
+  @Action(NewWorkingWeek)
+  newWorkingWeekHandler(ctx: StateContext<SprintCapacityPlanerStateModel>, action: NewWorkingWeek) {
+    const state = ctx.getState();
+    ctx.patchState({
+      workWeek: action.workingWeek
     });
 
     return ctx.dispatch(new CalcCapacity());

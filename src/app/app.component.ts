@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, Directive, ElementRef, Input, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {TeamMember} from './teammember.model';
 import {Select, Store} from '@ngxs/store';
 import {SprintCapacityPlanerState} from './sprint-capacity-planer.state';
-import {DeleteTeamMember, EditTeamMember, NewDate, NewTeamMember, NewWorkingHours} from './sprint-capacity-planer.actions';
+import {DeleteTeamMember, EditTeamMember, NewDate, NewTeamMember, NewWorkingHours, NewWorkingWeek} from './sprint-capacity-planer.actions';
 import * as moment from 'moment';
 
 @Component({
@@ -12,6 +12,9 @@ import * as moment from 'moment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChild('newName', {static: false}) newNameInput: ElementRef;
+  @ViewChild('newDaysOf', {static: false}) newDaysOfInput: ElementRef;
+
   @Select(SprintCapacityPlanerState.teammembers) teamMembers$: Observable<TeamMember[]>;
   @Select(SprintCapacityPlanerState.to) from$: Observable<string>;
   @Select(SprintCapacityPlanerState.to) to$: Observable<string>;
@@ -29,15 +32,10 @@ export class AppComponent {
 
 
   constructor(private readonly store: Store) {
-    console.log(moment().format('DD.MM.YYYY'));
   }
 
   onWorkingHoursChange(hours: string): void {
     this.store.dispatch(new NewWorkingHours(parseInt(hours, 0)));
-  }
-
-  onFromChange(from: string): void {
-
   }
 
   onDateChange(from: string, to: string): void {
@@ -47,10 +45,11 @@ export class AppComponent {
   onAddTeamMember(name: string, daysOf: string) {
     this.store.dispatch(new NewTeamMember(name, parseInt(daysOf, 0)));
     this.newModalOpen = false;
+    this.clearAddTeamMemberModal();
   }
 
   onWorkWeekChange(workWeek: string): void {
-
+    this.store.dispatch(new NewWorkingWeek(parseInt(workWeek, 0)));
   }
 
   onDeleteTeamMember(teammember: TeamMember) {
@@ -65,5 +64,10 @@ export class AppComponent {
   openEditTeamMemberModal(teammember: TeamMember) {
     this.teamMemberToEdit = teammember;
     this.editModalOpen = true;
+  }
+
+  private clearAddTeamMemberModal(): void {
+    this.newNameInput.nativeElement.value = '';
+    this.newDaysOfInput.nativeElement.value = '0';
   }
 }

@@ -7,6 +7,13 @@ export class NewWorkingHours {
   }
 }
 
+export class NewWorkingWeek {
+  static readonly type = '[Sprint Capacity] New Working Week';
+
+  constructor(public workingWeek: number) {
+  }
+}
+
 export class NewTeamMember {
   static readonly type = '[Sprint Capacity] New Team Member';
 
