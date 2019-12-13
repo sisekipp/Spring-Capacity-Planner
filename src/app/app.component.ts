@@ -33,7 +33,7 @@ export class AppComponent {
   @Select(SprintCapacityPlanerState.capacityForTask) capactiyForTasks$: Observable<number>;
 
   fromDate: string = moment().format('DD.MM.YYYY');
-  toDate: string = moment().format('DD.MM.YYYY');
+  toDate: string = moment().add({week: 1}).format('DD.MM.YYYY');
 
   newModalOpen: boolean;
   editModalOpen: boolean;

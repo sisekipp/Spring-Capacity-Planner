@@ -17,11 +17,11 @@ import * as moment from 'moment';
     name: 'sprint_capacity',
     defaults: {
       from: moment().format('DD.MM.YYYY'),
-      to: moment().format('DD.MM.YYYY'),
+      to: moment().add({ week: 1}).format('DD.MM.YYYY'),
       workingHours: 8,
       capacity: 0,
       teamMember: [],
-      sprintLength: 0,
+      sprintLength: 1,
       workWeek: 5,
       capacityForTask: 60
     }
