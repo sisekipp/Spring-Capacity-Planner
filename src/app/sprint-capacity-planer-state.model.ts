@@ -8,4 +8,5 @@ export interface SprintCapacityPlanerStateModel {
   teamMember: TeamMember[];
   sprintLength: number;
   workWeek: number;
+  capacityForTask: number;
 }

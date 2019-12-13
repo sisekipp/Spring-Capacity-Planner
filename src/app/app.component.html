@@ -31,6 +31,12 @@
               <input #workWeek type="number" clrInput name="workWeek"
                      (change)="onWorkWeekChange(workWeek.value)" value="{{workWeek$ | async}}"/>
             </clr-input-container>
+            <clr-input-container>
+              <label>Capacity for tasks</label>
+              <input #capacityTasks type="number" clrInput name="capacityTasks"
+                     (change)="onCapactiyForTasksChange(capacityTasks.value)" value="{{capactiyForTasks$ | async}}"/>
+              <clr-control-helper>In percent</clr-control-helper>
+            </clr-input-container>
           </form>
         </div>
       </div>

@@ -4,7 +4,7 @@ import {SprintCapacityPlanerStateModel} from './sprint-capacity-planer-state.mod
 import {
   CalcCapacity,
   DeleteTeamMember,
-  EditTeamMember,
+  EditTeamMember, NewCapacityForTasks,
   NewDate,
   NewTeamMember,
   NewWorkingHours,
@@ -22,7 +22,8 @@ import * as moment from 'moment';
       capacity: 0,
       teamMember: [],
       sprintLength: 0,
-      workWeek: 5
+      workWeek: 5,
+      capacityForTask: 60
     }
   }
 )
@@ -36,6 +37,11 @@ export class SprintCapacityPlanerState {
   @Selector()
   static capacity(state: SprintCapacityPlanerStateModel) {
     return state.capacity;
+  }
+
+  @Selector()
+  static capacityInPercentage(state: SprintCapacityPlanerStateModel) {
+    return (state.capacityForTask * state.capacity) / 100;
   }
 
   @Selector()
@@ -63,6 +69,11 @@ export class SprintCapacityPlanerState {
     return state.workWeek;
   }
 
+  @Selector()
+  static capacityForTask(state: SprintCapacityPlanerStateModel) {
+    return state.capacityForTask;
+  }
+
   @Action(NewWorkingHours)
   newWorkingHours(ctx: StateContext<SprintCapacityPlanerStateModel>, action: NewWorkingHours) {
     const state = ctx.getState();
@@ -78,6 +89,16 @@ export class SprintCapacityPlanerState {
     const state = ctx.getState();
     ctx.patchState({
       workWeek: action.workingWeek
+    });
+
+    return ctx.dispatch(new CalcCapacity());
+  }
+
+  @Action(NewCapacityForTasks)
+  newCapacityForTasks(ctx: StateContext<SprintCapacityPlanerStateModel>, action: NewCapacityForTasks) {
+    const state = ctx.getState();
+    ctx.patchState({
+      capacityForTask: action.capacityForTasks
     });
 
     return ctx.dispatch(new CalcCapacity());
@@ -113,7 +134,7 @@ export class SprintCapacityPlanerState {
   @Action(CalcCapacity)
   calcCapacityHandler(ctx: StateContext<SprintCapacityPlanerStateModel>) {
     const state = ctx.getState();
-    const newCapacity = this.calcCapacity(state.teamMember, state.workingHours, state.workWeek, state.from, state.to);
+    const newCapacity = this.calcCapacity(state.teamMember, state.workingHours, state.workWeek, state.capacityForTask, state.from, state.to);
     ctx.patchState({
       capacity: newCapacity
     });
@@ -152,7 +173,7 @@ export class SprintCapacityPlanerState {
     return ctx.dispatch(new CalcCapacity());
   }
 
-  private calcCapacity(teammembers: TeamMember[], workingsHours: number, workWeek: number, from: string, to: string) {
+  private calcCapacity(teammembers: TeamMember[], workingsHours: number, workWeek: number, capacityForTasks: number, from: string, to: string) {
     const sprintLength = moment(to, 'DD.MM.YYYY').diff(moment(from, 'DD.MM.YYYY'), 'weeks');
     let newCapacity = 0;
     for (const teammember of teammembers) {

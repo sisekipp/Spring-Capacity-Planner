@@ -3,7 +3,15 @@ import {Observable} from 'rxjs';
 import {TeamMember} from './teammember.model';
 import {Select, Store} from '@ngxs/store';
 import {SprintCapacityPlanerState} from './sprint-capacity-planer.state';
-import {DeleteTeamMember, EditTeamMember, NewDate, NewTeamMember, NewWorkingHours, NewWorkingWeek} from './sprint-capacity-planer.actions';
+import {
+  DeleteTeamMember,
+  EditTeamMember,
+  NewCapacityForTasks,
+  NewDate,
+  NewTeamMember,
+  NewWorkingHours,
+  NewWorkingWeek
+} from './sprint-capacity-planer.actions';
 import * as moment from 'moment';
 
 @Component({
@@ -19,9 +27,10 @@ export class AppComponent {
   @Select(SprintCapacityPlanerState.to) from$: Observable<string>;
   @Select(SprintCapacityPlanerState.to) to$: Observable<string>;
   @Select(SprintCapacityPlanerState.workingHours) workingHours$: Observable<number>;
-  @Select(SprintCapacityPlanerState.capacity) capacity$: Observable<number>;
+  @Select(SprintCapacityPlanerState.capacityInPercentage) capacity$: Observable<number>;
   @Select(SprintCapacityPlanerState.sprintLength) sprintLength$: Observable<number>;
   @Select(SprintCapacityPlanerState.workWeek) workWeek$: Observable<number>;
+  @Select(SprintCapacityPlanerState.capacityForTask) capactiyForTasks$: Observable<number>;
 
   fromDate: string = moment().format('DD.MM.YYYY');
   toDate: string = moment().format('DD.MM.YYYY');
@@ -50,6 +59,10 @@ export class AppComponent {
 
   onWorkWeekChange(workWeek: string): void {
     this.store.dispatch(new NewWorkingWeek(parseInt(workWeek, 0)));
+  }
+
+  onCapactiyForTasksChange(capactiyForTasks: string): void {
+    this.store.dispatch(new NewCapacityForTasks(parseInt(capactiyForTasks, 0)));
   }
 
   onDeleteTeamMember(teammember: TeamMember) {

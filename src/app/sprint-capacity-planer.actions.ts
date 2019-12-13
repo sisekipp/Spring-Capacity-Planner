@@ -14,6 +14,13 @@ export class NewWorkingWeek {
   }
 }
 
+export class NewCapacityForTasks {
+  static readonly type = '[Sprint Capacity] New Capactiy for Tasks';
+
+  constructor(public capacityForTasks: number) {
+  }
+}
+
 export class NewTeamMember {
   static readonly type = '[Sprint Capacity] New Team Member';
 
