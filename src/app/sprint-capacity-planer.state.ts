@@ -12,13 +12,13 @@ import {
   NewWorkingWeek
 } from './sprint-capacity-planer.actions';
 import {TeamMember} from './teammember.model';
-import * as moment from 'moment';
+import {format, addWeeks, parse, differenceInWeeks} from 'date-fns';
 
 @State<SprintCapacityPlanerStateModel>({
     name: 'sprint_capacity',
     defaults: {
-      from: moment().format('DD.MM.YYYY'),
-      to: moment().add({week: 1}).format('DD.MM.YYYY'),
+      from: format(new Date(), 'dd.MM.yyyy'),
+      to: format(addWeeks(new Date(), 1), 'dd.MM.yyyy'),
       workingHours: 8,
       capacity: 0,
       teamMember: [],
@@ -122,7 +122,7 @@ export class SprintCapacityPlanerState {
   @Action(NewDate)
   newDate(ctx: StateContext<SprintCapacityPlanerStateModel>, action: NewDate) {
     const state = ctx.getState();
-    const length = moment(action.to, 'DD.MM.YYYY').diff(moment(action.from, 'DD.MM.YYYY'), 'weeks');
+    const length = differenceInWeeks(parse(action.to, 'dd.MM.yyyy', new Date()), parse(action.from, 'dd.MM.yyyy', new Date()));
     ctx.patchState({
       from: action.from,
       to: action.to,
@@ -175,11 +175,10 @@ export class SprintCapacityPlanerState {
   }
 
   private calcCapacity(teammembers: TeamMember[], workingsHours: number, workWeek: number, capacityForTasks: number, from: string, to: string): number {
-    const sprintLength = moment(to, 'DD.MM.YYYY').diff(moment(from, 'DD.MM.YYYY'), 'weeks');
+    const sprintLength = differenceInWeeks(parse(to, 'dd.MM.yyyy', new Date()), parse(from, 'dd.MM.yyyy', new Date()));
     let newCapacity = 0;
     for (const teammember of teammembers) {
       const memberCapacity = (this.calcTeamMemberWorkDay(workingsHours, teammember.workingTimeInPercent) * ((workWeek * sprintLength) - teammember.daysOf));
-      console.log(memberCapacity);
       newCapacity = newCapacity + memberCapacity;
     }
 
@@ -188,7 +187,6 @@ export class SprintCapacityPlanerState {
 
   private calcTeamMemberWorkDay(workingHours: number, workingTimeInPercent): number {
     const memberWorkDay = (workingHours * workingTimeInPercent) / 100;
-    console.log('Member work day: ', memberWorkDay);
     return memberWorkDay;
   }
 

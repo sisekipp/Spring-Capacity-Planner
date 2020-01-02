@@ -12,7 +12,8 @@ import {
   NewWorkingHours,
   NewWorkingWeek
 } from './sprint-capacity-planer.actions';
-import * as moment from 'moment';
+
+import {format, addWeeks} from 'date-fns';
 
 @Component({
   selector: 'app-root',
@@ -33,8 +34,8 @@ export class AppComponent {
   @Select(SprintCapacityPlanerState.workWeek) workWeek$: Observable<number>;
   @Select(SprintCapacityPlanerState.capacityForTask) capactiyForTasks$: Observable<number>;
 
-  fromDate: string = moment().format('DD.MM.YYYY');
-  toDate: string = moment().add({week: 1}).format('DD.MM.YYYY');
+  fromDate: string = format(new Date(), 'dd.MM.yyyy');
+  toDate: string = format(addWeeks(new Date(), 1), 'dd.MM.yyyy');
 
   newModalOpen: boolean;
   editModalOpen: boolean;
