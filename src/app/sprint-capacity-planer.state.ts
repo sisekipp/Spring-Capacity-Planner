@@ -4,7 +4,8 @@ import {SprintCapacityPlanerStateModel} from './sprint-capacity-planer-state.mod
 import {
   CalcCapacity,
   DeleteTeamMember,
-  EditTeamMember, NewCapacityForTasks,
+  EditTeamMember,
+  NewCapacityForTasks,
   NewDate,
   NewTeamMember,
   NewWorkingHours,
@@ -17,7 +18,7 @@ import * as moment from 'moment';
     name: 'sprint_capacity',
     defaults: {
       from: moment().format('DD.MM.YYYY'),
-      to: moment().add({ week: 1}).format('DD.MM.YYYY'),
+      to: moment().add({week: 1}).format('DD.MM.YYYY'),
       workingHours: 8,
       capacity: 0,
       teamMember: [],
@@ -107,7 +108,7 @@ export class SprintCapacityPlanerState {
   @Action(NewTeamMember)
   newTeamMember(ctx: StateContext<SprintCapacityPlanerStateModel>, action: NewTeamMember) {
     const state = ctx.getState();
-    const newTeamMember = {name: action.name, daysOf: action.daysOf} as TeamMember;
+    const newTeamMember = {name: action.name, daysOf: action.daysOf, workingTimeInPercent: action.workingTime} as TeamMember;
     ctx.patchState({
       teamMember: [
         ...state.teamMember,
@@ -161,7 +162,7 @@ export class SprintCapacityPlanerState {
     let newTeamMember: TeamMember[] = [];
     for (const member of state.teamMember) {
       if (member.name === action.name) {
-        newTeamMember.push({name: action.name, daysOf: action.daysOf} as TeamMember);
+        newTeamMember.push({name: action.name, daysOf: action.daysOf, workingTimeInPercent: action.workingTime} as TeamMember);
       } else {
         newTeamMember.push(member);
       }
@@ -173,15 +174,22 @@ export class SprintCapacityPlanerState {
     return ctx.dispatch(new CalcCapacity());
   }
 
-  private calcCapacity(teammembers: TeamMember[], workingsHours: number, workWeek: number, capacityForTasks: number, from: string, to: string) {
+  private calcCapacity(teammembers: TeamMember[], workingsHours: number, workWeek: number, capacityForTasks: number, from: string, to: string): number {
     const sprintLength = moment(to, 'DD.MM.YYYY').diff(moment(from, 'DD.MM.YYYY'), 'weeks');
     let newCapacity = 0;
     for (const teammember of teammembers) {
-      const memberCapacity = (workingsHours * ((workWeek * sprintLength) - teammember.daysOf));
+      const memberCapacity = (this.calcTeamMemberWorkDay(workingsHours, teammember.workingTimeInPercent) * ((workWeek * sprintLength) - teammember.daysOf));
+      console.log(memberCapacity);
       newCapacity = newCapacity + memberCapacity;
     }
 
     return newCapacity;
+  }
+
+  private calcTeamMemberWorkDay(workingHours: number, workingTimeInPercent): number {
+    const memberWorkDay = (workingHours * workingTimeInPercent) / 100;
+    console.log('Member work day: ', memberWorkDay);
+    return memberWorkDay;
   }
 
 }

@@ -22,6 +22,7 @@ import * as moment from 'moment';
 export class AppComponent {
   @ViewChild('newName', {static: false}) newNameInput: ElementRef;
   @ViewChild('newDaysOf', {static: false}) newDaysOfInput: ElementRef;
+  @ViewChild('newWorkingTime', {static: false}) workingTimeInput: ElementRef;
 
   @Select(SprintCapacityPlanerState.teammembers) teamMembers$: Observable<TeamMember[]>;
   @Select(SprintCapacityPlanerState.to) from$: Observable<string>;
@@ -51,8 +52,8 @@ export class AppComponent {
     this.store.dispatch(new NewDate(from, to));
   }
 
-  onAddTeamMember(name: string, daysOf: string) {
-    this.store.dispatch(new NewTeamMember(name, parseInt(daysOf, 0)));
+  onAddTeamMember(name: string, daysOf: string, workingTime: string) {
+    this.store.dispatch(new NewTeamMember(name, parseInt(daysOf, 0), parseInt(workingTime, 0)));
     this.newModalOpen = false;
     this.clearAddTeamMemberModal();
   }
@@ -69,8 +70,8 @@ export class AppComponent {
     this.store.dispatch(new DeleteTeamMember(teammember));
   }
 
-  onEditTeamMember(name: string, daysOf: string) {
-    this.store.dispatch(new EditTeamMember(name, parseInt(daysOf, 0)));
+  onEditTeamMember(name: string, daysOf: string, workingTime: string) {
+    this.store.dispatch(new EditTeamMember(name, parseInt(daysOf, 0), parseInt(workingTime, 0)));
     this.editModalOpen = false;
   }
 
@@ -82,5 +83,7 @@ export class AppComponent {
   private clearAddTeamMemberModal(): void {
     this.newNameInput.nativeElement.value = '';
     this.newDaysOfInput.nativeElement.value = '0';
+    this.newDaysOfInput.nativeElement.value = '0';
+    this.workingTimeInput.nativeElement.value = '100';
   }
 }

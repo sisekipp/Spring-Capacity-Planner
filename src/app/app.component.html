@@ -54,6 +54,7 @@
             </clr-dg-action-bar>
             <clr-dg-column>Name</clr-dg-column>
             <clr-dg-column>Days of</clr-dg-column>
+            <clr-dg-column>Working time</clr-dg-column>
 
             <clr-dg-row *ngFor="let teammember of teamMembers$ | async">
               <clr-dg-action-overflow>
@@ -62,6 +63,7 @@
               </clr-dg-action-overflow>
               <clr-dg-cell>{{teammember.name}}</clr-dg-cell>
               <clr-dg-cell>{{teammember.daysOf}}</clr-dg-cell>
+              <clr-dg-cell>{{teammember.workingTimeInPercent}}%</clr-dg-cell>
             </clr-dg-row>
 
             <clr-dg-footer>Sprint duration: {{sprintLength$ | async}} weeks / Capacity: {{capacity$ | async}} hours</clr-dg-footer>
@@ -79,6 +81,11 @@
               <input #newName type="text" clrInput name="name" autocomplete="off"/>
             </clr-input-container>
             <clr-input-container>
+              <label>Working time</label>
+              <input #newWorkingTime type="number" value="100" clrInput name="workingTime"/>
+              <clr-control-helper>In percent</clr-control-helper>
+            </clr-input-container>
+            <clr-input-container>
               <label>Days of</label>
               <input #newDaysOf type="number" value="0" clrInput name="daysOf"/>
             </clr-input-container>
@@ -86,7 +93,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" (click)="newModalOpen = false">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="onAddTeamMember(newName.value,newDaysOf.value)">Add</button>
+          <button type="button" class="btn btn-primary" (click)="onAddTeamMember(newName.value,newDaysOf.value, newWorkingTime.value)">Add</button>
         </div>
       </clr-modal>
 
@@ -99,6 +106,11 @@
               <input #editName type="text" clrInput [disabled]="true" name="name" value="{{teamMemberToEdit?.name}}" autocomplete="off"/>
             </clr-input-container>
             <clr-input-container>
+              <label>Working time</label>
+              <input #editWorkingTime type="number"  value="{{teamMemberToEdit?.workingTimeInPercent}}" clrInput name="workingTime"/>
+              <clr-control-helper>In percent</clr-control-helper>
+            </clr-input-container>
+            <clr-input-container>
               <label>Days of</label>
               <input #editDaysOf type="number" value="0" value="{{teamMemberToEdit?.daysOf}}" clrInput name="daysOf"/>
             </clr-input-container>
@@ -106,7 +118,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline" (click)="editModalOpen = false">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="onEditTeamMember(editName.value,editDaysOf.value)">Edit</button>
+          <button type="button" class="btn btn-primary" (click)="onEditTeamMember(editName.value,editDaysOf.value, editWorkingTime.value)">Edit</button>
         </div>
       </clr-modal>
 
