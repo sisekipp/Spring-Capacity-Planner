@@ -23,17 +23,17 @@
             </clr-date-container>
             <clr-input-container>
               <label>Working hours</label>
-              <input #workingHours type="number" clrInput name="workingHours"
+              <input #workingHours type="number" pattern="\d*" clrInput name="workingHours"
                      (change)="onWorkingHoursChange(workingHours.value)" value="{{workingHours$ | async}}"/>
             </clr-input-container>
             <clr-input-container>
               <label>Workweek</label>
-              <input #workWeek type="number" clrInput name="workWeek"
+              <input #workWeek type="number" pattern="\d*" clrInput name="workWeek"
                      (change)="onWorkWeekChange(workWeek.value)" value="{{workWeek$ | async}}"/>
             </clr-input-container>
             <clr-input-container>
               <label>Capacity for tasks</label>
-              <input #capacityTasks type="number" clrInput name="capacityTasks"
+              <input #capacityTasks type="number" pattern="\d*" clrInput name="capacityTasks"
                      (change)="onCapactiyForTasksChange(capacityTasks.value)" value="{{capactiyForTasks$ | async}}"/>
               <clr-control-helper>In percent</clr-control-helper>
             </clr-input-container>
@@ -87,7 +87,7 @@
             </clr-input-container>
             <clr-input-container>
               <label>Days of</label>
-              <input #newDaysOf type="number" value="0" clrInput name="daysOf"/>
+              <input #newDaysOf type="number" pattern="\d*" value="0" clrInput name="daysOf"/>
             </clr-input-container>
           </form>
         </div>
@@ -107,12 +107,12 @@
             </clr-input-container>
             <clr-input-container>
               <label>Working time</label>
-              <input #editWorkingTime type="number"  value="{{teamMemberToEdit?.workingTimeInPercent}}" clrInput name="workingTime"/>
+              <input #editWorkingTime type="number" pattern="\d*"  value="{{teamMemberToEdit?.workingTimeInPercent}}" clrInput name="workingTime"/>
               <clr-control-helper>In percent</clr-control-helper>
             </clr-input-container>
             <clr-input-container>
               <label>Days of</label>
-              <input #editDaysOf type="number" value="0" value="{{teamMemberToEdit?.daysOf}}" clrInput name="daysOf"/>
+              <input #editDaysOf type="number" pattern="\d*" value="0" value="{{teamMemberToEdit?.daysOf}}" clrInput name="daysOf"/>
             </clr-input-container>
           </form>
         </div>
