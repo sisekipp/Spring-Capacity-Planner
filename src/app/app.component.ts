@@ -21,9 +21,9 @@ import {format, addWeeks} from 'date-fns';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild('newName', {static: false}) newNameInput: ElementRef;
-  @ViewChild('newDaysOf', {static: false}) newDaysOfInput: ElementRef;
-  @ViewChild('newWorkingTime', {static: false}) workingTimeInput: ElementRef;
+  @ViewChild('newName') newNameInput: ElementRef;
+  @ViewChild('newDaysOf') newDaysOfInput: ElementRef;
+  @ViewChild('newWorkingTime') workingTimeInput: ElementRef;
 
   @Select(SprintCapacityPlanerState.teammembers) teamMembers$: Observable<TeamMember[]>;
   @Select(SprintCapacityPlanerState.to) from$: Observable<string>;
