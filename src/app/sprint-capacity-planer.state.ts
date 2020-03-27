@@ -13,6 +13,7 @@ import {
 } from './sprint-capacity-planer.actions';
 import {TeamMember} from './teammember.model';
 import {format, addWeeks, parse, differenceInWeeks} from 'date-fns';
+import {Injectable} from '@angular/core';
 
 @State<SprintCapacityPlanerStateModel>({
     name: 'sprint_capacity',
@@ -28,6 +29,7 @@ import {format, addWeeks, parse, differenceInWeeks} from 'date-fns';
     }
   }
 )
+@Injectable()
 export class SprintCapacityPlanerState {
 
   @Selector()
