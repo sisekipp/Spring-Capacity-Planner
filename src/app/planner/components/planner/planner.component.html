@@ -1,0 +1,124 @@
+<div class="content-container">
+  <div class="content-area">
+    <div class="content-area">
+      <div class="clr-row">
+        <div class="clr-col-6">
+          <form clrForm>
+            <clr-date-container>
+              <label>Start</label>
+              <input #from type="date" clrDate name="from" [(ngModel)]="fromDate"
+                     (focusout)="onDateChange(from.value,to.value)"
+                     (clrDateChange)="onDateChange(from.value,to.value)">
+            </clr-date-container>
+            <clr-date-container>
+              <label>End</label>
+              <input #to type="date" clrDate name="to" [(ngModel)]="toDate"
+                     (focusout)="onDateChange(from.value,to.value)"
+                     (clrDateChange)="onDateChange(from.value,to.value)">
+            </clr-date-container>
+            <clr-input-container>
+              <label>Working hours</label>
+              <input #workingHours type="number" pattern="\d*" clrInput name="workingHours"
+                     (change)="onWorkingHoursChange(workingHours.value)" value="{{workingHours$ | async}}"/>
+            </clr-input-container>
+            <clr-input-container>
+              <label>Workweek</label>
+              <input #workWeek type="number" pattern="\d*" clrInput name="workWeek"
+                     (change)="onWorkWeekChange(workWeek.value)" value="{{workWeek$ | async}}"/>
+            </clr-input-container>
+            <clr-input-container>
+              <label>Capacity for tasks</label>
+              <input #capacityTasks type="number" pattern="\d*" clrInput name="capacityTasks"
+                     (change)="onCapactiyForTasksChange(capacityTasks.value)" value="{{capactiyForTasks$ | async}}"/>
+              <clr-control-helper>In percent</clr-control-helper>
+            </clr-input-container>
+          </form>
+        </div>
+      </div>
+
+      <div class="clr-row">
+        <div class="clr-col-12">
+          <clr-datagrid>
+            <clr-dg-action-bar>
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-secondary" (click)="newModalOpen = true">
+                  <clr-icon shape="plus"></clr-icon>
+                  Add team member
+                </button>
+              </div>
+            </clr-dg-action-bar>
+            <clr-dg-column>Name</clr-dg-column>
+            <clr-dg-column>Days of</clr-dg-column>
+            <clr-dg-column>Working time</clr-dg-column>
+
+            <clr-dg-row *ngFor="let teammember of teamMembers$ | async">
+              <clr-dg-action-overflow>
+                <button class="action-item" (click)="openEditTeamMemberModal(teammember)">Edit</button>
+                <button class="action-item" (click)="onDeleteTeamMember(teammember)">Delete</button>
+              </clr-dg-action-overflow>
+              <clr-dg-cell>{{teammember.name}}</clr-dg-cell>
+              <clr-dg-cell>{{teammember.daysOf}}</clr-dg-cell>
+              <clr-dg-cell>{{teammember.workingTimeInPercent}}%</clr-dg-cell>
+            </clr-dg-row>
+
+            <clr-dg-footer>Sprint duration: {{sprintLength$ | async}} weeks / Capacity: {{capacity$ | async}} hours</clr-dg-footer>
+          </clr-datagrid>
+        </div>
+      </div>
+
+
+      <clr-modal [(clrModalOpen)]="newModalOpen">
+        <h3 class="modal-title">Add team member</h3>
+        <div class="modal-body">
+          <form clrForm>
+            <clr-input-container>
+              <label>Name</label>
+              <input #newName type="text" clrInput name="name" autocomplete="off"/>
+            </clr-input-container>
+            <clr-input-container>
+              <label>Working time</label>
+              <input #newWorkingTime type="number" pattern="\d*" value="100" clrInput name="workingTime"/>
+              <clr-control-helper>In percent</clr-control-helper>
+            </clr-input-container>
+            <clr-input-container>
+              <label>Days of</label>
+              <input #newDaysOf type="number" pattern="\d*" value="0" clrInput name="daysOf"/>
+            </clr-input-container>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="newModalOpen = false">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="onAddTeamMember(newName.value,newDaysOf.value, newWorkingTime.value)">Add</button>
+        </div>
+      </clr-modal>
+
+      <clr-modal [(clrModalOpen)]="editModalOpen">
+        <h3 class="modal-title">Edit team member</h3>
+        <div class="modal-body">
+          <form clrForm>
+            <clr-input-container>
+              <label>Name</label>
+              <input #editName type="text" clrInput [disabled]="true" name="name" value="{{teamMemberToEdit?.name}}" autocomplete="off"/>
+            </clr-input-container>
+            <clr-input-container>
+              <label>Working time</label>
+              <input #editWorkingTime type="number" pattern="\d*"  value="{{teamMemberToEdit?.workingTimeInPercent}}" clrInput name="workingTime"/>
+              <clr-control-helper>In percent</clr-control-helper>
+            </clr-input-container>
+            <clr-input-container>
+              <label>Days of</label>
+              <input #editDaysOf type="number" pattern="\d*" value="0" value="{{teamMemberToEdit?.daysOf}}" clrInput name="daysOf"/>
+            </clr-input-container>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="editModalOpen = false">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="onEditTeamMember(editName.value,editDaysOf.value, editWorkingTime.value)">Edit</button>
+        </div>
+      </clr-modal>
+
+    </div>
+  </div>
+</div>
+
+

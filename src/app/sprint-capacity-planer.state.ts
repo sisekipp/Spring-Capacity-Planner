@@ -11,7 +11,7 @@ import {
   NewWorkingHours,
   NewWorkingWeek
 } from './sprint-capacity-planer.actions';
-import {TeamMember} from './teammember.model';
+import {TeamMember} from './model/teammember.model';
 import {format, addWeeks, parse, differenceInWeeks} from 'date-fns';
 import {Injectable} from '@angular/core';
 
@@ -25,7 +25,8 @@ import {Injectable} from '@angular/core';
       teamMember: [],
       sprintLength: 1,
       workWeek: 5,
-      capacityForTask: 60
+      capacityForTask: 60,
+      scrumTeams: []
     }
   }
 )

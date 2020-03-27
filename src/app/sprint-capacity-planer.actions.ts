@@ -1,4 +1,5 @@
-import {TeamMember} from './teammember.model';
+import {TeamMember} from './model/teammember.model';
+
 
 export class NewWorkingHours {
   static readonly type = '[Sprint Capacity] New Working Hours';
