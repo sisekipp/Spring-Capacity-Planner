@@ -73,6 +73,7 @@ export class PlannerComponent {
   onEditTeamMember(name: string, daysOf: string, workingTime: string) {
     this.store.dispatch(new EditTeamMember(name, parseInt(daysOf, 0), parseInt(workingTime, 0)));
     this.editModalOpen = false;
+    this.teamMemberToEdit = null;
   }
 
   openEditTeamMemberModal(teammember: TeamMember) {
