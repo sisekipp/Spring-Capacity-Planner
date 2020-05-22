@@ -1,4 +1,4 @@
-import {TeamMember} from './model/teammember.model';
+import { TeamMember } from '../../model/teammember.model';
 
 
 export class NewWorkingHours {

@@ -1,9 +1,12 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
-import {SprintCapacityPlanerState} from '../../../sprint-capacity-planer.state';
+
 import {Observable} from 'rxjs';
 
 import {addWeeks, format} from 'date-fns';
+
+import {TeamMember} from '../../../model/teammember.model';
+import { SprintCapacityPlanerState } from '../../state/sprint-capacity-planer.state';
 import {
   DeleteTeamMember, EditTeamMember,
   NewCapacityForTasks,
@@ -11,8 +14,7 @@ import {
   NewTeamMember,
   NewWorkingHours,
   NewWorkingWeek
-} from '../../../sprint-capacity-planer.actions';
-import {TeamMember} from '../../../model/teammember.model';
+} from '../../state/sprint-capacity-planer.actions';
 
 @Component({
   selector: 'app-planner',

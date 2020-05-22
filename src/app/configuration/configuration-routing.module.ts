@@ -5,4 +5,4 @@ export const configurationRoutes: Routes = [
   {
     path: '', component: ConfigurationComponent
   }
-]
+];
