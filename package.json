@@ -37,9 +37,17 @@
     "@ngxs/devtools-plugin": "^3.6.2",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
+    "husky": "^4.2.5",
+    "prettier": "2.0.5",
+    "pretty-quick": "^2.0.1",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
     "typescript": "~3.8.3",
     "webpack-bundle-analyzer": "^3.6.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
