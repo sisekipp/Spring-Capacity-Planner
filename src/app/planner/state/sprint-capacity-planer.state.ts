@@ -1,6 +1,6 @@
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from "@ngxs/store";
 
-import { SprintCapacityPlanerStateModel } from './sprint-capacity-planer-state.model';
+import { SprintCapacityPlanerStateModel } from "./sprint-capacity-planer-state.model";
 import {
   CalcCapacity,
   DeleteTeamMember,
@@ -10,21 +10,18 @@ import {
   NewTeamMember,
   NewWorkingHours,
   NewWorkingWeek,
-} from './sprint-capacity-planer.actions';
+} from "./sprint-capacity-planer.actions";
 
-import { format, addWeeks, parse, differenceInWeeks } from 'date-fns';
-import { Injectable } from '@angular/core';
-import { CalculationService } from '../services/calculation.service';
-import { TeamMember } from '../../model/teammember.model';
-
-
-
+import { format, addWeeks, parse, differenceInWeeks } from "date-fns";
+import { Injectable } from "@angular/core";
+import { CalculationService } from "../services/calculation.service";
+import { TeamMember } from "../../model/teammember.model";
 
 @State<SprintCapacityPlanerStateModel>({
-  name: 'sprint_capacity',
+  name: "sprint_capacity",
   defaults: {
-    from: format(new Date(), 'dd.MM.yyyy'),
-    to: format(addWeeks(new Date(), 1), 'dd.MM.yyyy'),
+    from: format(new Date(), "dd.MM.yyyy"),
+    to: format(addWeeks(new Date(), 1), "dd.MM.yyyy"),
     workingHours: 8,
     capacity: 0,
     teamMember: [],
@@ -36,9 +33,7 @@ import { TeamMember } from '../../model/teammember.model';
 })
 @Injectable()
 export class SprintCapacityPlanerState {
-
-  constructor(private calculationService: CalculationService) {
-  }
+  constructor(private calculationService: CalculationService) {}
 
   @Selector()
   static workingHours(state: SprintCapacityPlanerStateModel) {
@@ -90,7 +85,6 @@ export class SprintCapacityPlanerState {
     ctx: StateContext<SprintCapacityPlanerStateModel>,
     action: NewWorkingHours
   ) {
-    const state = ctx.getState();
     ctx.patchState({
       workingHours: action.workingHours,
     });
@@ -103,7 +97,6 @@ export class SprintCapacityPlanerState {
     ctx: StateContext<SprintCapacityPlanerStateModel>,
     action: NewWorkingWeek
   ) {
-    const state = ctx.getState();
     ctx.patchState({
       workWeek: action.workingWeek,
     });
@@ -116,7 +109,6 @@ export class SprintCapacityPlanerState {
     ctx: StateContext<SprintCapacityPlanerStateModel>,
     action: NewCapacityForTasks
   ) {
-    const state = ctx.getState();
     ctx.patchState({
       capacityForTask: action.capacityForTasks,
     });
@@ -134,6 +126,7 @@ export class SprintCapacityPlanerState {
       name: action.name,
       daysOf: action.daysOf,
       workingTimeInPercent: action.workingTime,
+      isMoD: action.isMod,
     } as TeamMember;
     ctx.patchState({
       teamMember: [...state.teamMember, newTeamMember],
@@ -144,10 +137,9 @@ export class SprintCapacityPlanerState {
 
   @Action(NewDate)
   newDate(ctx: StateContext<SprintCapacityPlanerStateModel>, action: NewDate) {
-    const state = ctx.getState();
     const length = differenceInWeeks(
-      parse(action.to, 'dd.MM.yyyy', new Date()),
-      parse(action.from, 'dd.MM.yyyy', new Date())
+      parse(action.to, "dd.MM.yyyy", new Date()),
+      parse(action.from, "dd.MM.yyyy", new Date())
     );
     ctx.patchState({
       from: action.from,
@@ -205,6 +197,7 @@ export class SprintCapacityPlanerState {
           name: action.name,
           daysOf: action.daysOf,
           workingTimeInPercent: action.workingTime,
+          isMoD: action.isMoD,
         } as TeamMember);
       } else {
         newTeamMember.push(member);

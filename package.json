@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "lint": "ng lint",
-    "build:prod": "ng build --prod"
+    "build:prod": "ng build --prod",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "private": true,
   "dependencies": {
@@ -36,12 +38,15 @@
     "@angular/compiler-cli": "~10.2.3",
     "@angular/language-service": "~10.2.3",
     "@ngxs/devtools-plugin": "^3.7.1",
+    "@types/jest": "^26.0.15",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "husky": "^4.2.5",
+    "jest": "^26.6.3",
+    "jest-preset-angular": "^8.3.2",
     "prettier": "2.2.1",
     "pretty-quick": "^3.1.0",
-    "ts-node": "~7.0.0",
+    "ts-node": "~9.0.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.7",
     "webpack-bundle-analyzer": "^4.2.0"
@@ -50,5 +55,14 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupJest.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/test.ts"
+    ]
   }
 }
